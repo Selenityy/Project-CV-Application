@@ -138,10 +138,10 @@ class Personal extends Component {
                 onChange={this.handleInputChange}
               />
               <InputField
-                label={emailLabel}
-                id="email"
+                label={addressLabel}
+                id="address"
                 type="text"
-                value={emailText}
+                value={addressText}
                 onChange={this.handleInputChange}
               />
               <InputField
@@ -152,10 +152,10 @@ class Personal extends Component {
                 onChange={this.handleInputChange}
               />
               <InputField
-                label={addressLabel}
-                id="address"
+                label={emailLabel}
+                id="email"
                 type="text"
-                value={addressText}
+                value={emailText}
                 onChange={this.handleInputChange}
               />
               <div className="submit Button">
@@ -165,8 +165,8 @@ class Personal extends Component {
           </div>
         ) : (
           <div onClick={this.handleEditClick}>
-            {nameText ? nameText : ""} {emailText ? emailText : ""}
-            {phoneText ? phoneText : ""} {addressText ? addressText : ""}
+            {nameText ? nameText : ""} {addressText ? addressText : ""}
+            {phoneText ? phoneText : ""} {emailText ? emailText : ""}
           </div>
         )}
       </div>
