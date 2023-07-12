@@ -58,7 +58,7 @@ class Summary extends Component {
               method="GET"
             >
               <InputField
-                label="Summary:"
+                label=""
                 id="summary"
                 type="text"
                 value={summaryText}
