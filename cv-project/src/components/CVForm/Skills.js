@@ -13,6 +13,7 @@ class Skills extends Component {
       skills: [],
       isEditing: false,
       isSkillAdded: false,
+      editingIndex: null,
     };
   }
 
@@ -20,32 +21,61 @@ class Skills extends Component {
     this.setState({
       isEditing: true,
       isSkillAdded: true,
+      editingIndex: null,
+      skill: "",
     });
   };
 
-  handleEditClick = () => {
+  handleEditClick = (index) => {
     this.setState({
       isEditing: true,
+      editingIndex: index,
+      skill: this.state.skills[index],
     });
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { skills, skill } = this.state;
+    const { skills, skill, editingIndex } = this.state;
 
     if (skill.trim() !== "") {
-      this.setState({
-        skills: skills.concat(skill),
-        skill: "",
-        isEditing: false,
-      });
+      if (editingIndex !== null) {
+        const updatedSkills = [...skills];
+        updatedSkills[editingIndex] = skill;
+
+        this.setState({
+          skills: updatedSkills,
+          skill: "",
+          isEditing: false,
+          editingIndex: null,
+        });
+      } else {
+        this.setState({
+          skills: [...skills, skill],
+          skill: "",
+          isEditing: false,
+        });
+      }
     }
   };
 
   handleInputChange = (e) => {
-    this.setState({
-      skill: e.target.value,
-    });
+    const { skills, editingIndex } = this.state;
+    const skill = e.target.value;
+
+    if (editingIndex !== null && skill === "") {
+      const updatedSkills = skills.filter((_, index) => index !== editingIndex);
+      this.setState({
+        skills: updatedSkills,
+        skill: "",
+        isEditing: false,
+        editingIndex: null,
+      });
+    } else {
+      this.setState({
+        skill,
+      });
+    }
   };
 
   render() {
@@ -57,7 +87,7 @@ class Skills extends Component {
           <Button text="+ Add Skill" onClick={this.handleAddSkill} />
         ) : isEditing ? (
           <div id="skillInputs" className="inputValues">
-            <Tasks skills={skills} />
+            <Tasks skills={skills} onEditClick={this.handleEditClick} />
             <form
               onSubmit={this.handleSubmit}
               id="skillsEdit"
@@ -79,8 +109,10 @@ class Skills extends Component {
             </form>
           </div>
         ) : (
-          <div onClick={this.handleEditClick}>
-            {skills.length > 0 && <Tasks skills={skills} />}
+          <div>
+            {skills.length > 0 && (
+              <Tasks skills={skills} onEditClick={this.handleEditClick} />
+            )}
             <Button text="+ Add Skill" onClick={this.handleAddSkill} />
           </div>
         )}
