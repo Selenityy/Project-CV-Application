@@ -1,27 +1,18 @@
 import React, { Component } from "react";
 
 class InputField extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      value: "",
-    };
-  }
-
-  handleChange = (e) => {
-    this.setState({
-      value: e.target.value,
-    });
-  };
-
   render() {
-    const { value } = this.state;
-    const { label, type } = this.props;
+    const { value, label, id, type, placeholder, onChange } = this.props;
     return (
       <div>
-        <label>{label}</label>
-        <input type={type} value={value} onChange={this.handleChange} />
+        <label htmlFor={id}>{label}</label>
+        <input
+          id={id}
+          type={type}
+          value={value}
+          placeholder={placeholder}
+          onChange={onChange}
+        />
       </div>
     );
   }
