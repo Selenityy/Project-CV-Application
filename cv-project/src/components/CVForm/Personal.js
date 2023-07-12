@@ -8,130 +8,168 @@ class Personal extends Component {
 
     this.state = {
       name: {
-        text: "",
-        isEditing: true,
-        label: "Name:",
-      },
-      country: {
-        text: "",
-        isEditing: true,
-        label: "Country:",
+        nameText: "",
+        nameLabel: "Name:",
       },
       address: {
-        text: "",
-        isEditing: true,
-        label: "Address:",
-      },
-      cityState: {
-        text: "",
-        isEditing: true,
-        label: "City/State:",
-      },
-      zipCode: {
-        text: "",
-        isEditing: true,
-        label: "ZipCode:",
+        addressText: "",
+        addressLabel: "Address:",
       },
       phone: {
-        text: "",
-        isEditing: true,
-        label: "Phone Number:",
+        phoneText: "",
+        phoneLabel: "Phone:",
       },
       email: {
-        text: "",
-        isEditing: true,
-        label: "Email:",
+        emailText: "",
+        emailLabel: "Email:",
       },
-      isInfoAdded: false,
+      isEditing: false,
+      isPersonalInfoAdded: false,
     };
   }
 
-  handleAddMode = () => {
+  handleAddName = () => {
     this.setState({
-      isInfoAdded: true,
+      isEditing: true,
+      isPersonalInfoAdded: true,
     });
   };
 
-  handleFieldClick = (field) => {
-    this.setState((prevState) => ({
-      [field]: {
-        ...prevState[field],
-        isEditing: true,
-      },
-    }));
-  };
-
-  handleInputChange = (e, field) => {
-    const { value } = e.target;
-    this.setState((prevState) => ({
-      [field]: {
-        ...prevState[field],
-        text: value,
-      },
-    }));
-  };
-
-  handleSaveFields = () => {
-    this.setState((prevState) => {
-      const updatedFields = {};
-
-      Object.keys(prevState).forEach((field) => {
-        if (field !== "isInfoAdded") {
-          updatedFields[field] = {
-            ...prevState[field],
-            // text: prevState[field].text,
-            isEditing: false,
-            // label: prevState[field].label,
-          };
-        }
-      });
-      return {
-        ...updatedFields,
-      };
+  handleEditClick = () => {
+    this.setState({
+      isEditing: true,
     });
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const { nameText } = this.state.name;
+    const { emailText } = this.state.email;
+    const { phoneText } = this.state.phone;
+    const { addressText } = this.state.address;
+
+    this.setState({
+      name: {
+        ...this.state.name,
+        nameText: nameText,
+      },
+      email: {
+        ...this.state.email,
+        emailText: emailText,
+      },
+      phone: {
+        ...this.state.phone,
+        phoneText: phoneText,
+      },
+      address: {
+        ...this.state.address,
+        addressText: addressText,
+      },
+      isEditing: false,
+    });
+  };
+
+  handleInputChange = (e) => {
+    const { id, value } = e.target;
+
+    if (id === "name") {
+      this.setState((prevState) => ({
+        name: {
+          ...prevState.name,
+          nameText: value,
+        },
+      }));
+    } else if (id === "email") {
+      this.setState((prevState) => ({
+        email: {
+          ...prevState.email,
+          emailText: value,
+        },
+      }));
+    } else if (id === "phone") {
+      this.setState((prevState) => ({
+        phone: {
+          ...prevState.phone,
+          phoneText: value,
+        },
+      }));
+    } else if (id === "address") {
+      this.setState((prevState) => ({
+        address: {
+          ...prevState.address,
+          addressText: value,
+        },
+      }));
+    }
   };
 
   render() {
-    const { isInfoAdded, ...fields } = this.state;
-    if (isInfoAdded) {
-      return (
-        <>
-          <div id="personalInputs" className="inputValues">
-            {Object.entries(fields).map(
-              ([field, { text, isEditing, label }]) => (
-                <div
-                  key={field}
-                  onClick={() => this.handleFieldClick(field)}
-                  style={{ cursor: "pointer" }}
-                >
-                  {isEditing ? (
-                    <InputField
-                      label={label}
-                      id={field}
-                      type="text"
-                      value={text}
-                      onChange={(e) => this.handleInputChange(e, field)}
-                    />
-                  ) : (
-                    <div>{text}</div>
-                  )}
-                </div>
-              )
-            )}
-          </div>
-          <div className="submitButton">
-            <Button text="Save" onClick={this.handleSaveFields} />
-          </div>
-        </>
-      );
-    }
+    const { isEditing, isPersonalInfoAdded } = this.state;
+    const nameLabel = this.state.name.nameLabel;
+    const nameText = this.state.name.nameText;
+    const emailLabel = this.state.email.emailLabel;
+    const emailText = this.state.email.emailText;
+    const phoneLabel = this.state.phone.phoneLabel;
+    const phoneText = this.state.phone.phoneText;
+    const addressLabel = this.state.address.addressLabel;
+    const addressText = this.state.address.addressText;
 
     return (
-      <>
-        <div className="addButton">
-          <Button text="+ Add Personal Info" onClick={this.handleAddMode} />
-        </div>
-      </>
+      <div>
+        {!isPersonalInfoAdded ? (
+          <Button
+            text="+ Add Personal Information"
+            onClick={this.handleAddName}
+          />
+        ) : isEditing ? (
+          <div id="personalInputs" className="inputValues">
+            <form
+              onSubmit={this.handleSubmit}
+              id="personalEdit"
+              className="editForm"
+              action=""
+              method="GET"
+            >
+              <InputField
+                label={nameLabel}
+                id="name"
+                type="text"
+                value={nameText}
+                onChange={this.handleInputChange}
+              />
+              <InputField
+                label={emailLabel}
+                id="email"
+                type="text"
+                value={emailText}
+                onChange={this.handleInputChange}
+              />
+              <InputField
+                label={phoneLabel}
+                id="phone"
+                type="text"
+                value={phoneText}
+                onChange={this.handleInputChange}
+              />
+              <InputField
+                label={addressLabel}
+                id="address"
+                type="text"
+                value={addressText}
+                onChange={this.handleInputChange}
+              />
+              <div className="submit Button">
+                <Button text="Save" type="submit" />
+              </div>
+            </form>
+          </div>
+        ) : (
+          <div onClick={this.handleEditClick}>
+            {nameText ? nameText : ""} {emailText ? emailText : ""}
+            {phoneText ? phoneText : ""} {addressText ? addressText : ""}
+          </div>
+        )}
+      </div>
     );
   }
 }
