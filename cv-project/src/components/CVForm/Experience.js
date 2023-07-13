@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import InputField from "../Utilities/InputField";
+import MultipleInputs from "../Utilities/MultipleInputs";
 import Button from "../Utilities/Button";
 import Jobs from "../Utilities/Jobs";
 
@@ -84,9 +84,8 @@ class Experience extends Component {
     }
   };
 
-  handleInputChange = (e) => {
+  handleInputChange = (name, value) => {
     const { jobs, editingIndex } = this.state;
-    const { name, value } = e.target;
 
     if (editingIndex !== null && value === "") {
       const updatedJobs = jobs.filter((_, index) => index !== editingIndex);
@@ -130,44 +129,52 @@ class Experience extends Component {
               action=""
               method="GET"
             >
-              <InputField
+              <MultipleInputs
                 label="Job Title:"
                 id="jobTitle"
                 type="text"
                 name="title"
-                value={job.title || ""}
+                value={job.title}
                 onChange={this.handleInputChange}
               />
-              <InputField
+              <MultipleInputs
                 label="Company:"
                 id="company"
                 type="text"
                 name="company"
-                value={job.company || ""}
+                value={job.company}
                 onChange={this.handleInputChange}
               />
-              <InputField
+              <MultipleInputs
                 label="Start Date:"
                 id="startDate"
                 type="text"
                 name="startDate"
-                value={job.startDate || ""}
+                value={job.startDate}
                 onChange={this.handleInputChange}
               />
-              <InputField
+              <MultipleInputs
                 label="End Date:"
                 id="endDate"
                 type="text"
                 name="endDate"
-                value={job.endDate || ""}
+                value={job.endDate}
                 onChange={this.handleInputChange}
               />
-              <InputField
+              <MultipleInputs
                 label="Address:"
                 id="address"
                 type="text"
                 name="address"
-                value={job.address || ""}
+                value={job.address}
+                onChange={this.handleInputChange}
+              />
+              <MultipleInputs
+                label="Description:"
+                id="description"
+                type="text"
+                name="description"
+                value={job.description}
                 onChange={this.handleInputChange}
               />
               <div className="submitButton">
